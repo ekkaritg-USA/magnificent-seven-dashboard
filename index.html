@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magnificent Seven: Interactive Economic Analysis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f7f7;
+            color: #333333;
+        }
+        .company-selector.active {
+            background-color: #4A5568;
+            color: white;
+            box-shadow: 0 4px 14px 0 rgb(74 85 104 / 39%);
+        }
+        .company-selector {
+             transition: all 0.3s ease;
+             border: 1px solid #CBD5E0;
+        }
+        .company-selector:hover {
+            background-color: #E2E8F0;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 350px;
+            max-height: 45vh;
+        }
+        .metric-card {
+            background-color: #FFFFFF;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .section-intro {
+            max-width: 48rem;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            color: #4A5568;
+        }
+        .title-text { color: #2D3748; }
+        .subtitle-text { color: #4A5568; }
+        .accent-text { color: #2B6CB0; }
+    </style>
+</head>
+<body class="antialiased">
+    <div class="container mx-auto px-4 py-8 md:py-12">
+
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-extrabold title-text mb-4">The Magnificent Seven's Economic Reliance</h1>
+            <p class="text-lg md:text-xl subtitle-text max-w-3xl mx-auto">An interactive analysis of their resilience to economic tides, the secular trends that power them, and the headwinds they face.</p>
+        </header>
+
+        <main>
+            <section id="kpis" class="mb-16">
+                <div class="section-intro mb-8">
+                    <h2 class="text-3xl font-bold title-text">An Unprecedented Scale</h2>
+                    <p class="mt-2">To grasp the scale of the Magnificent Seven, we first look at their collective financial and economic might. These key metrics illustrate their massive influence on the market and the economy.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                    <div class="metric-card">
+                        <h3 class="text-3xl font-semibold accent-text">$18+ Trillion</h3>
+                        <p class="subtitle-text mt-2">Combined Market Cap (Early 2025)</p>
+                    </div>
+                    <div class="metric-card">
+                        <h3 class="text-3xl font-semibold accent-text">~35%</h3>
+                        <p class="subtitle-text mt-2">Share of S&P 500 Market Cap</p>
+                    </div>
+                    <div class="metric-card">
+                        <h3 class="text-3xl font-semibold accent-text">38%</h3>
+                        <p class="subtitle-text mt-2">of all U.S. Public Firm R&D Spend (2022)</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="deep-dive" class="mb-16 bg-white p-6 md:p-8 rounded-xl shadow-lg">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold title-text">Company Deep Dive: A Tale of Divergence</h2>
+                    <p class="section-intro mt-2">
+                        While grouped together, each M7 company has a unique performance story. Select a company below to explore its individual revenue growth against the M7 average and discover its specific drivers and economic context.
+                    </p>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-2 md:gap-4 mb-8" id="company-selectors">
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
+                    <div id="company-details" class="lg:col-span-2">
+                        <div id="company-card" class="metric-card p-6 h-full">
+                        </div>
+                    </div>
+                    <div class="lg:col-span-3">
+                        <div class="metric-card p-6">
+                            <h3 class="text-lg font-semibold text-gray-700 mb-4 text-center" id="chart-title">Q1 2025 Revenue Growth (YoY)</h3>
+                            <div class="chart-container">
+                                <canvas id="companyRevenueChart"></canvas>
+                            </div>
+                             <p id="chart-context" class="text-sm text-gray-500 mt-4 text-center"></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="resilience" class="mb-16">
+                 <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold title-text">Pillars of Resilience</h2>
+                    <p class="section-intro mt-2">
+                        What allows these companies to weather economic storms? Their resilience is built on powerful secular growth trends and their own immense market power and financial strength.
+                    </p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="metric-card lg:col-span-2">
+                        <h4 class="font-bold text-xl mb-3 accent-text">Secular Growth: The AI & Cloud Revolutions</h4>
+                        <p class="subtitle-text mb-4">The M7 are not just participating in the economy; they are creating new ones. AI and Cloud generate demand that is less tied to traditional economic cycles.</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                            <div>
+                                <h5 class="font-semibold text-gray-700">The AI Flywheel</h5>
+                                <p class="text-sm subtitle-text">Massive R&D spend fuels AI innovation, driving demand for everything from Nvidia's chips to Microsoft's Azure AI services and creating new revenue streams.</p>
+                            </div>
+                            <div>
+                                 <h5 class="font-semibold text-gray-700">Cloud Dominance</h5>
+                                <div class="chart-container" style="height: 180px; max-height: 25vh;">
+                                    <canvas id="cloudMarketShareChart"></canvas>
+                                </div>
+                                <p class="text-xs subtitle-text mt-2 text-center">Combined Market Share (Q1 2025)</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <h4 class="font-bold text-xl mb-3 accent-text">Intrinsic Strengths</h4>
+                        <p class="subtitle-text">Their market positions create a deep competitive moat.</p>
+                        <div class="mt-6 space-y-4">
+                            <div class="flex items-center">
+                                <span class="text-blue-500 text-2xl mr-3">♕</span>
+                                <span class="text-gray-700">Market Dominance & Ecosystem Lock-in</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-blue-500 text-2xl mr-3">💰</span>
+                                <span class="text-gray-700">Exceptional Profitability & Financial Health</span>
+                            </div>
+                             <div class="flex items-center">
+                                <span class="text-blue-500 text-2xl mr-3">🌍</span>
+                                <span class="text-gray-700">Global Scale & Revenue Diversification</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="headwinds" class="mb-12">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold title-text">Navigating Headwinds</h2>
+                    <p class="section-intro mt-2">
+                        Despite their strengths, the M7 are not invincible. They face significant challenges that could impact future growth and test their resilience.
+                    </p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="metric-card">
+                        <h4 class="font-semibold text-lg mb-2">Valuation & Interest Rates</h4>
+                        <p class="text-sm subtitle-text">Premium P/E ratios require massive growth. Higher rates make future earnings less valuable, pressuring stock prices.</p>
+                    </div>
+                    <div class="metric-card">
+                        <h4 class="font-semibold text-lg mb-2">Regulatory Scrutiny</h4>
+                        <p class="text-sm subtitle-text">Global antitrust investigations and data privacy laws threaten core business models and acquisitions.</p>
+                    </div>
+                    <div class="metric-card">
+                        <h4 class="font-semibold text-lg mb-2">Geopolitical Tensions</h4>
+                        <p class="text-sm subtitle-text">Reliance on global supply chains and markets (especially China) creates vulnerability to tariffs and export controls.</p>
+                    </div>
+                     <div class="metric-card">
+                        <h4 class="font-semibold text-lg mb-2">Law of Large Numbers</h4>
+                        <p class="text-sm subtitle-text">As companies become massive, sustaining high percentage growth becomes harder, potentially shrinking their growth premium.</p>
+                    </div>
+                </div>
+            </section>
+
+             <section id="conclusion" class="bg-gray-100 p-8 rounded-xl">
+                 <div class="text-center">
+                    <h2 class="text-3xl font-bold title-text">Conclusion: A Nuanced Resilience</h2>
+                    <p class="section-intro mt-4 text-gray-700">
+                        The Magnificent Seven are <span class="font-semibold accent-text">less reliant</span> on economic growth than most sectors, but they are <span class="font-semibold text-red-600">not immune</span>. Their future is a battle between powerful, self-generated <span class="font-semibold">innovation cycles</span> (like AI) and the persistent pull of <span class="font-semibold">macroeconomic gravity</span>, regulatory pressures, and geopolitical friction. Their ability to continue creating new markets, rather than just serving existing ones, will determine their long-term trajectory.
+                    </p>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        const m7Data = {
+            AAPL: { name: "Apple Inc.", logo: '', sector: "Information Technology", revenueYoY: 5, context: "Showed modest growth. Its performance is tied to consumer spending on high-end electronics, but its booming, high-margin Services division provides a resilient and growing revenue stream." },
+            MSFT: { name: "Microsoft Corp.", logo: '🪟', sector: "Information Technology", revenueYoY: 13, context: "Growth is heavily driven by enterprise spending on its Azure cloud platform and AI services. This makes it more resilient to shifts in consumer spending than others in the M7." },
+            GOOGL: { name: "Alphabet Inc.", logo: 'G', sector: "Communication Services", revenueYoY: 12, context: "Core advertising business is cyclical, but its dominance in search and the strong growth of Google Cloud provide a powerful buffer. AI integration is a key future driver." },
+            AMZN: { name: "Amazon.com, Inc.", logo: 'a', sector: "Consumer Discretionary / IT", revenueYoY: 9, context: "A mixed profile. Its e-commerce arm is sensitive to consumer spending, but its highly profitable AWS cloud division is a pillar of strength, driven by enterprise digital transformation." },
+            NVDA: { name: "Nvidia Corp.", logo: 'N', sector: "Information Technology", revenueYoY: 69, context: "The prime example of decoupling, driven by the explosive, structural demand for its AI chips. Its growth is currently more tied to the AI investment cycle than the economic cycle." },
+            META: { name: "Meta Platforms, Inc.", logo: 'M', sector: "Communication Services", revenueYoY: 16, context: "Like Google, revenue is largely from advertising and thus cyclical. However, its massive user base and investment in AI to improve ad effectiveness give it significant resilience." },
+            TSLA: { name: "Tesla, Inc.", logo: 'T', sector: "Consumer Discretionary", revenueYoY: -9, context: "The most traditionally cyclical of the M7. Its performance is highly sensitive to consumer discretionary spending, auto financing rates, and intense competition in the EV market." }
+        };
+        let companyRevenueChart, cloudMarketShareChart, currentCompany = 'NVDA';
+        function updateCompanyDetails(ticker) {
+            currentCompany = ticker;
+            const data = m7Data[ticker];
+            const companyCard = document.getElementById('company-card');
+            companyCard.innerHTML = `<div class="flex items-center mb-4"><div class="text-4xl font-bold mr-4 flex items-center justify-center h-16 w-16 rounded-full bg-gray-100">${data.logo}</div><div><h3 class="text-2xl font-bold title-text">${data.name}</h3><p class="text-sm subtitle-text">${data.sector}</p></div></div><div class="space-y-3 text-gray-700"><p class="mt-4 text-sm bg-gray-50 p-3 rounded-md">${data.context}</p></div>`;
+            updateChart();
+            updateSelectors();
+        }
+        function updateChart() {
+            const selectedCompanyData = m7Data[currentCompany];
+            const m7AverageYoY = Object.values(m7Data).reduce((sum, company) => sum + company.revenueYoY, 0) / Object.keys(m7Data).length;
+            companyRevenueChart.data.labels = [selectedCompanyData.name, 'M7 Average'];
+            companyRevenueChart.data.datasets[0].data = [selectedCompanyData.revenueYoY, m7AverageYoY];
+            companyRevenueChart.data.datasets[0].backgroundColor = ['#2B6CB0', '#A0AEC0'];
+            companyRevenueChart.data.datasets[0].borderColor = ['#2C5282', '#718096'];
+            document.getElementById('chart-title').innerText = `Q1 2025 Revenue Growth (YoY): ${selectedCompanyData.name} vs. M7 Average`;
+            document.getElementById('chart-context').innerText = `Comparing ${selectedCompanyData.name}'s ${selectedCompanyData.revenueYoY > 0 ? 'growth' : 'decline'} of ${selectedCompanyData.revenueYoY}% against the M7 average of ~${m7AverageYoY.toFixed(1)}%. This highlights performance divergence within the group.`;
+            companyRevenueChart.update();
+        }
+        function updateSelectors() {
+            const selectors = document.querySelectorAll('.company-selector');
+            selectors.forEach(selector => {
+                if (selector.dataset.ticker === currentCompany) selector.classList.add('active');
+                else selector.classList.remove('active');
+            });
+        }
+        function createCompanySelectors() {
+            const container = document.getElementById('company-selectors');
+            Object.keys(m7Data).forEach(ticker => {
+                const data = m7Data[ticker];
+                const button = document.createElement('button');
+                button.className = 'company-selector font-semibold py-2 px-3 md:px-4 rounded-full text-sm md:text-base focus:outline-none';
+                button.textContent = data.name.replace(' Inc.', '').replace(' Corp.', '').replace('.com, Inc.', '');
+                button.dataset.ticker = ticker;
+                button.addEventListener('click', () => updateCompanyDetails(ticker));
+                container.appendChild(button);
+            });
+        }
+        function initCharts() {
+            const ctxRevenue = document.getElementById('companyRevenueChart').getContext('2d');
+            companyRevenueChart = new Chart(ctxRevenue, {
+                type: 'bar', data: { labels: [], datasets: [{ label: 'YoY Growth (%)', data: [], borderWidth: 1, barPercentage: 0.6, categoryPercentage: 0.7 }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(context) { return `YoY Revenue: ${context.raw.toFixed(1)}%`; } } } }, scales: { y: { beginAtZero: true, title: { display: true, text: 'YoY Growth (%)' } } } }
+            });
+            const ctxCloud = document.getElementById('cloudMarketShareChart').getContext('2d');
+            cloudMarketShareChart = new Chart(ctxCloud, {
+                type: 'doughnut', data: { labels: ['Amazon AWS', 'Microsoft Azure', 'Google Cloud', 'Others'], datasets: [{ data: [29, 21, 10, 40], backgroundColor: ['#2B6CB0', '#4299E1', '#63B3ED', '#E2E8F0'], borderColor: '#FFFFFF', borderWidth: 2 }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: {size: 10} } } } }
+            });
+        }
+        document.addEventListener('DOMContentLoaded', () => { createCompanySelectors(); initCharts(); updateCompanyDetails(currentCompany); });
+    </script>
+</body>
+</html>
+"""
